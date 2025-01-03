@@ -1,17 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <h1>Admin Dashboard</h1>
-    <div id="appointmentsList">
-        <!-- Appointments will be listed here -->
-    </div>
+import { db } from './firebase';
+import { collection, getDocs } from "firebase/firestore";
 
-    <script src="admin_dashboard.js"></script>
-</body>
-</html>
+// Function to load and display appointments
+const loadAppointments = async () => {
+    const querySnapshot = await getDocs(collection(db, "appointments"));
+    const appointmentsList = document.getElementById("appointmentsList");
+
+    querySnapshot.forEach((doc) => {
+        const appointment = doc.data();
+        const div = document.createElement("div");
+        div.innerHTML = `
+            <p><strong>Name:</strong> ${appointment.name}</p>
+            <p><strong>Service:</strong> ${appointment.service}</p>
+            <p><strong>Date:</strong> ${appointment.date}</p>
+            <p><strong>Time:</strong> ${appointment.time}</p>
+            <button onclick="deleteAppointment('${doc.id}')">Delete</button>
+        `;
+        appointmentsList.appendChild(div);
+    });
+};
+
+// Function to delete an appointment
+const deleteAppointment = async (id) => {
+    await deleteDoc(doc(db, "appointments", id));
+    loadAppointments();  // Reload the appointments after deletion
+};
+
+// Load appointments on page load
+loadAppointments();
