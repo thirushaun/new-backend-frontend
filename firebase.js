@@ -1,5 +1,10 @@
-// Replace import with Firebase CDN method
-// Initialize Firebase configuration
+// firebase.js
+
+// Import the necessary Firebase functions
+import { initializeApp } from "firebase/app";
+import { getFirestore, collection, addDoc } from "firebase/firestore";
+
+// Firebase configuration (Replace with your actual Firebase project config)
 const firebaseConfig = {
   apiKey: "AIzaSyCfagQ1fcsslhZ33xm1QBqGOYO_JsqEkeg",
   authDomain: "medivironap.firebaseapp.com",
@@ -11,5 +16,9 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore(app);
+const app = initializeApp(firebaseConfig);
+
+// Initialize Firestore
+const db = getFirestore(app);
+
+export { db };
