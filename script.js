@@ -1,11 +1,6 @@
-// script.js
-
-import { db } from './firebase'; // Import Firebase config
-import { addDoc, collection } from "firebase/firestore"; // Import Firestore functions
-
 // Ensure emailJS is initialized correctly
 (function() {
-    emailjs.init('rCVEgB2SShzE8epf1'); // Your public key from EmailJS
+    emailjs.init('rCVEgB2SShzE8epf1'); // Public key from EmailJS
 })();
 
 document.getElementById('appointmentForm').addEventListener('submit', async function (event) {
@@ -63,27 +58,5 @@ document.getElementById('appointmentForm').addEventListener('submit', async func
     } catch (e) {
         console.error("Error adding document: ", e);
         alert("There was an error while saving the appointment data.");
-    }
-});
-
-// Admin Login Button functionality
-document.getElementById('adminLogin').addEventListener('click', function() {
-    document.getElementById('adminLoginSection').style.display = 'block';  // Show login form
-});
-
-// Handle Admin login
-document.getElementById('adminLoginBtn').addEventListener('click', function() {
-    const passwordInput = document.getElementById('adminPasswordInput').value;
-    
-    // Replace this with your actual admin password logic
-    const adminPassword = 'yourpassword'; // Hardcoded for testing, but ideally store securely
-
-    if (passwordInput === adminPassword) {
-        alert("Admin login successful!");
-        // Redirect to admin dashboard or allow further actions
-        document.getElementById('adminLoginSection').style.display = 'none';  // Hide login form
-        // Add admin dashboard logic if necessary
-    } else {
-        alert("Invalid admin password");
     }
 });
