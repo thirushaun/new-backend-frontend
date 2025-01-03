@@ -1,4 +1,7 @@
-// Firebase configuration
+// Initialize EmailJS with your public key
+emailjs.init("rCvEgB25ShzE8epf1");  // Replace with your public key
+
+// Set up Firebase configuration (firebase.js should already be included in the HTML)
 const firebaseConfig = {
   apiKey: "AIzaSyCfagQ1fcsslhZ33xm1QBqGOYO_JsqEkeg",
   authDomain: "medivironap.firebaseapp.com",
@@ -10,12 +13,14 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore(app);
+const firebaseApp = firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore(firebaseApp); // Firestore Database
 
-document.getElementById('appointmentForm').addEventListener('submit', async function(event) {
+// Handle form submission and send email via EmailJS
+document.getElementById('appointmentForm').addEventListener('submit', function (event) {
     event.preventDefault();
 
+    // Get form values
     const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
     const phone = document.getElementById('phone').value;
@@ -23,50 +28,44 @@ document.getElementById('appointmentForm').addEventListener('submit', async func
     const date = document.getElementById('date').value;
     const time = document.getElementById('time').value;
 
-    // Validate input
+    // Validate form data
     if (!name || !email || !phone || !service || !date || !time) {
-        alert("Please fill out all the fields.");
+        alert('Please fill out all the fields.');
         return;
     }
 
-    // Email validation regex
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-        alert("Please enter a valid email address.");
-        return;
-    }
-
-    const appointmentData = {
+    // Add to Firestore (optional)
+    db.collection('appointments').add({
         name: name,
         email: email,
         phone: phone,
         service: service,
         date: date,
-        time: time
-    };
-
-    // Save to Firestore
-    try {
-        const docRef = await db.collection("appointments").add(appointmentData);
-        console.log("Document written with ID: ", docRef.id);
-
-        // Send email via EmailJS
-        emailjs.send('service_mmd3jws', 'template_lraqztk', {
-            to_name: name,
-            to_email: email,
+        time: time,
+    })
+    .then(() => {
+        // Send email using EmailJS
+        const emailParams = {
+            name: name,
+            email: email,
+            phone: phone,
             service: service,
             date: date,
             time: time
-        }).then(response => {
-            console.log('Email sent successfully', response);
-            alert('Appointment booked and email sent successfully!');
-        }).catch(error => {
-            console.error('Error occurred while sending the email:', error);
-            alert('An error occurred while sending the email: ' + error.text);
-        });
+        };
 
-    } catch (e) {
-        console.error("Error adding document: ", e);
-        alert("There was an error while saving the appointment data.");
-    }
+        emailjs.send("service_mmd3jws", "template_lraqztk", emailParams)
+            .then((response) => {
+                alert("Your appointment has been booked!");
+                document.getElementById('appointmentForm').reset();
+            })
+            .catch((error) => {
+                console.error('Error sending email:', error);
+                alert("Something went wrong. Please try again.");
+            });
+    })
+    .catch((error) => {
+        console.error('Error saving data to Firestore:', error);
+        alert("Something went wrong. Please try again.");
+    });
 });
