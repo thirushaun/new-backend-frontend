@@ -1,10 +1,9 @@
-import { collection, addDoc } from 'https://www.gstatic.com/firebasejs/9.1.3/firebase-firestore.js';
-import { db } from './firebase.js';  // Ensure that firebase.js is set up properly
+// Ensure emailJS is initialized correctly
+(function() {
+    emailjs.init("rCVEgB2SShzE8epf1"); // Replace with your public key
+})();
 
-// Initialize EmailJS with your public key
-emailjs.init("rCvEgB25ShzE8epf1");
-
-// Handle form submission and send email via EmailJS
+// Appointment form submission
 document.getElementById('appointmentForm').addEventListener('submit', function (event) {
     event.preventDefault();
 
@@ -15,43 +14,60 @@ document.getElementById('appointmentForm').addEventListener('submit', function (
     const date = document.getElementById('date').value;
     const time = document.getElementById('time').value;
 
+    // Validate input
     if (!name || !email || !phone || !service || !date || !time) {
-        alert('Please fill out all the fields.');
+        alert("Please fill out all the fields.");
         return;
     }
 
-    // Save to Firestore
-    addDoc(collection(db, "appointments"), {
+    // Email validation regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        alert("Please enter a valid email address.");
+        return;
+    }
+
+    const appointmentData = {
         name: name,
         email: email,
         phone: phone,
         service: service,
         date: date,
-        time: time,
-    })
-    .then(() => {
-        // Send email using EmailJS
-        const emailParams = {
-            name: name,
-            email: email,
-            phone: phone,
-            service: service,
-            date: date,
-            time: time
-        };
+        time: time
+    };
 
-        emailjs.send("service_mmd3jws", "template_lraqztk", emailParams)
-            .then((response) => {
-                alert("Your appointment has been booked!");
-                document.getElementById('appointmentForm').reset();
-            })
-            .catch((error) => {
-                console.error('Error sending email:', error);
-                alert("Something went wrong. Please try again.");
-            });
+    console.log('Sending appointment data:', appointmentData);
+
+    // Send email via EmailJS
+    emailjs.send('service_mmd3jws', 'template_lraqztk', {
+        to_name: name,
+        to_email: email,
+        service: service,
+        date: date,
+        time: time
     })
-    .catch((error) => {
-        console.error('Error saving data to Firestore:', error);
-        alert("Something went wrong. Please try again.");
+    .then(response => {
+        console.log('Email sent successfully', response);
+        alert('Appointment booked and email sent successfully!');
+    })
+    .catch(error => {
+        console.error('Error occurred:', error);
+        alert('An error occurred while sending the email: ' + error.text);
     });
+});
+
+// Admin login functionality
+document.getElementById('adminLogin').addEventListener('click', function() {
+    document.getElementById('adminLoginSection').style.display = 'block';
+});
+
+document.getElementById('adminLoginBtn').addEventListener('click', function() {
+    const enteredPassword = document.getElementById('adminPasswordInput').value;
+    const correctPassword = '20061968'; // Set the admin password
+
+    if (enteredPassword === correctPassword) {
+        window.location.href = 'admin_dashboard.html'; // Redirect to admin dashboard if correct
+    } else {
+        alert('Incorrect password!');
+    }
 });
