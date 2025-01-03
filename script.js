@@ -1,4 +1,4 @@
-// Import the Firestore configuration
+// Import the Firebase configuration
 import { db } from './firebase'; // Ensure you have this import in your main script
 
 // Ensure emailJS is initialized correctly
