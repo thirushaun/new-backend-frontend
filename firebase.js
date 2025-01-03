@@ -1,8 +1,8 @@
-// Import the necessary Firebase components
-import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getFirestore, collection, addDoc } from "firebase/firestore"; 
 
-// Your Firebase configuration
+// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyCfagQ1fcsslhZ33xm1QBqGOYO_JsqEkeg",
   authDomain: "medivironap.firebaseapp.com",
@@ -16,8 +16,6 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Initialize Firestore
+// Get Firestore instance
 const db = getFirestore(app);
-
-// Export the Firestore database
 export { db };
