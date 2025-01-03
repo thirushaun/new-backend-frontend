@@ -1,12 +1,19 @@
-// Import the Firebase configuration
-import { db } from './firebase'; // Ensure you have this import in your main script
+// Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyCfagQ1fcsslhZ33xm1QBqGOYO_JsqEkeg",
+  authDomain: "medivironap.firebaseapp.com",
+  projectId: "medivironap",
+  storageBucket: "medivironap.firebasestorage.app",
+  messagingSenderId: "440212618885",
+  appId: "1:440212618885:web:11e85acba754ea9fd273ec",
+  measurementId: "G-0ZTM2WNX7M"
+};
 
-// Ensure emailJS is initialized correctly
-(function() {
-    emailjs.init('rCVEgB2SShzE8epf1'); // Your public key from EmailJS
-})();
+// Initialize Firebase
+const app = firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore(app);
 
-document.getElementById('appointmentForm').addEventListener('submit', async function (event) {
+document.getElementById('appointmentForm').addEventListener('submit', async function(event) {
     event.preventDefault();
 
     const name = document.getElementById('name').value;
@@ -40,7 +47,7 @@ document.getElementById('appointmentForm').addEventListener('submit', async func
 
     // Save to Firestore
     try {
-        const docRef = await addDoc(collection(db, "appointments"), appointmentData);
+        const docRef = await db.collection("appointments").add(appointmentData);
         console.log("Document written with ID: ", docRef.id);
 
         // Send email via EmailJS
