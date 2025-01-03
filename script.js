@@ -1,6 +1,9 @@
-// Ensure emailJS is initialized correctly
+// Import the Firebase configuration
+import { db } from './firebase.js';  // Ensure the path to firebase.js is correct
+
+// Ensure emailjs is initialized correctly
 (function() {
-    emailjs.init('rCVEgB2SShzE8epf1'); // Public key from EmailJS
+    emailjs.init('rCVEgB2SShzE8epf1'); // Your public key from EmailJS
 })();
 
 document.getElementById('appointmentForm').addEventListener('submit', async function (event) {
