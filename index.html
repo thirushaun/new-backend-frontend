@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Booking</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Add the EmailJS SDK script -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+    <script type="text/javascript">
+        (function(){
+            emailjs.init("rCVEgB2SShzE8epf1"); // Your public key from EmailJS
+        })();
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Book Your Appointment</h1>
+        <form id="appointmentForm">
+            <label for="name">Name</label>
+            <input type="text" id="name" placeholder="Enter your name" required>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="Enter your email" required>
+
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" placeholder="Enter your phone number" required>
+
+            <label for="service">Service</label>
+            <select id="service" required>
+                <option value="Consultation">Consultation</option>
+                <option value="X-Ray">X-Ray</option>
+                <option value="ECG">ECG</option>
+            </select>
+
+            <label for="date">Date</label>
+            <input type="date" id="date" required>
+
+            <label for="time">Time</label>
+            <input type="time" id="time" required>
+
+            <button type="submit">Book Appointment</button>
+            <div id="statusMessage"></div>
+        </form>
+    </div>
+
+    <!-- Admin Login Section -->
+    <div class="container" id="adminLoginSection" style="display:none;">
+        <label for="adminPasswordInput">Enter Admin Password</label>
+        <input type="password" id="adminPasswordInput" placeholder="Enter Admin Password" required>
+        <button id="adminLoginBtn">Login</button>
+    </div>
+
+    <button id="adminLogin">Admin Login</button>
+
+    <script src="script.js"></script>
+</body>
+</html>
