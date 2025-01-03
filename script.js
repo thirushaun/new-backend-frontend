@@ -1,7 +1,7 @@
-// Import the Firebase configuration
-import { db } from './firebase.js';  // Ensure the path to firebase.js is correct
+// Import the Firestore configuration
+import { db } from './firebase'; // Ensure you have this import in your main script
 
-// Ensure emailjs is initialized correctly
+// Ensure emailJS is initialized correctly
 (function() {
     emailjs.init('rCVEgB2SShzE8epf1'); // Your public key from EmailJS
 })();
