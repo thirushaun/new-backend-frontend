@@ -1,11 +1,4 @@
-// Import the Firebase configuration
-import { db } from './firebase'; // Ensure you have this import in your main script
-
-// Ensure emailJS is initialized correctly
-(function() {
-    emailjs.init('rCVEgB2SShzE8epf1'); // Your public key from EmailJS
-})();
-
+// Assuming Firebase has been initialized via the above script
 document.getElementById('appointmentForm').addEventListener('submit', async function (event) {
     event.preventDefault();
 
@@ -22,25 +15,16 @@ document.getElementById('appointmentForm').addEventListener('submit', async func
         return;
     }
 
-    // Email validation regex
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-        alert("Please enter a valid email address.");
-        return;
-    }
-
-    const appointmentData = {
-        name: name,
-        email: email,
-        phone: phone,
-        service: service,
-        date: date,
-        time: time
-    };
-
     // Save to Firestore
     try {
-        const docRef = await addDoc(collection(db, "appointments"), appointmentData);
+        const docRef = await db.collection("appointments").add({
+            name: name,
+            email: email,
+            phone: phone,
+            service: service,
+            date: date,
+            time: time
+        });
         console.log("Document written with ID: ", docRef.id);
 
         // Send email via EmailJS
