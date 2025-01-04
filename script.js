@@ -49,7 +49,7 @@ document.getElementById('appointmentForm').addEventListener('submit', function (
     .then(response => {
         console.log('Email sent successfully', response);
         alert('Appointment booked and email sent successfully!');
-
+        
         // Save to Firestore in the 'AP' document
         saveAppointmentToFirestore({
             name: name,
@@ -68,7 +68,7 @@ document.getElementById('appointmentForm').addEventListener('submit', function (
 
 // Admin login functionality
 document.getElementById('adminLogin').addEventListener('click', function() {
-    document.getElementById('adminLoginSection').style.display = 'block'; // Make the login section visible
+    document.getElementById('adminLoginSection').style.display = 'block';
 });
 
 document.getElementById('adminLoginBtn').addEventListener('click', function() {
@@ -83,18 +83,18 @@ document.getElementById('adminLoginBtn').addEventListener('click', function() {
 });
 
 // Save Appointment Function
-import { db } from './firebase'; // Ensure db is imported correctly
-import { doc, setDoc } from 'firebase/firestore';
+import { collection, doc, setDoc } from "firebase/firestore";
+import { db } from './firebase.js';
 
-// Function to save appointment data to Firestore
 async function saveAppointmentToFirestore(appointmentData) {
-    try {
-        const docRef = doc(db, "appointments", "AP"); // Define the document ID as 'AP'
+  try {
+    // Ensure you're using the correct Firestore document ID ('AP')
+    const docRef = doc(db, "appointments", "AP"); // Define the document ID as 'AP'
 
-        // Save the data to Firestore in the 'AP' document
-        await setDoc(docRef, appointmentData); // Set the data in the 'AP' document
-        console.log("Document written with ID: ", docRef.id);
-    } catch (e) {
-        console.error("Error adding document: ", e);
-    }
+    // Use setDoc to set the data (overwriting if needed)
+    await setDoc(docRef, appointmentData);
+    console.log("Document written with ID: ", docRef.id); // Log the document ID
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
 }
