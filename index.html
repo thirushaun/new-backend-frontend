@@ -6,12 +6,12 @@
     <title>Appointment Booking</title>
     <link rel="stylesheet" href="styles.css">
 
-    <!-- Add the EmailJS SDK script -->
+    <!-- Add the updated EmailJS SDK script -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
     <script type="text/javascript">
         // Initialize EmailJS with your public key
-        (function() {
+        (function(){
             emailjs.init("rCVEgB2SShzE8epf1"); // Replace with your public key from EmailJS
         })();
     </script>
@@ -79,7 +79,8 @@
 
             // Check if the password is correct
             if (password === "20061968") {
-                window.location.href = "admin_dashboard.html"; // Redirect to admin dashboard page
+                alert("Login successful! Redirecting to the Admin Dashboard...");
+                window.location.href = "admin_dashboard.html"; // Redirect to the admin dashboard page
             } else {
                 alert("Incorrect password, please try again.");
             }
