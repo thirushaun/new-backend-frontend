@@ -6,17 +6,19 @@
     <title>Appointment Booking</title>
     <link rel="stylesheet" href="styles.css">
 
-    <!-- Add the updated EmailJS SDK script -->
+    <!-- Add the EmailJS SDK script -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
     <script type="text/javascript">
-        (function(){
-            emailjs.init("rCVEgB2SShzE8epf1"); // Replace with your public key
+        // Initialize EmailJS with your public key
+        (function() {
+            emailjs.init("rCVEgB2SShzE8epf1"); // Replace with your public key from EmailJS
         })();
     </script>
 </head>
 <body>
 
+    <!-- Appointment Booking Form -->
     <div class="container">
         <h1>Book Your Appointment</h1>
         <form id="appointmentForm">
@@ -47,16 +49,76 @@
         </form>
     </div>
 
-    <!-- Admin Login Section -->
+    <!-- Admin Login Section (hidden by default) -->
     <div class="container" id="adminLoginSection" style="display:none;">
         <label for="adminPasswordInput">Enter Admin Password</label>
         <input type="password" id="adminPasswordInput" placeholder="Enter Admin Password" required>
         <button id="adminLoginBtn">Login</button>
     </div>
 
-    <button id="adminLogin">Admin Login</button> <!-- Admin Login Button -->
+    <!-- Admin Login Button -->
+    <button id="adminLogin" onclick="toggleAdminLogin()">Admin Login</button>
 
     <!-- Include the script for your custom functionality -->
     <script src="script.js"></script>
+
+    <script>
+        // Function to toggle the visibility of the admin login form
+        function toggleAdminLogin() {
+            var adminLoginSection = document.getElementById('adminLoginSection');
+            if (adminLoginSection.style.display === "none") {
+                adminLoginSection.style.display = "block"; // Show admin login section
+            } else {
+                adminLoginSection.style.display = "none"; // Hide admin login section
+            }
+        }
+
+        // Handle admin login button click
+        document.getElementById('adminLoginBtn').addEventListener('click', function () {
+            var password = document.getElementById('adminPasswordInput').value;
+
+            // Check if the password is correct
+            if (password === "20061968") {
+                window.location.href = "admin_dashboard.html"; // Redirect to admin dashboard page
+            } else {
+                alert("Incorrect password, please try again.");
+            }
+        });
+
+        // Handle form submission for appointment booking
+        document.getElementById('appointmentForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const service = document.getElementById('service').value;
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+
+            // Validate input fields
+            if (!name || !email || !phone || !service || !date || !time) {
+                alert("Please fill out all the fields.");
+                return;
+            }
+
+            // Send email via EmailJS using the provided template
+            emailjs.send('service_mmd3jws', 'template_lraqztk', {
+                to_name: name,
+                to_email: email,
+                service: service,
+                date: date,
+                time: time
+            })
+            .then(response => {
+                console.log('Email sent successfully', response);
+                alert('Appointment booked and email sent successfully!');
+            })
+            .catch(error => {
+                console.error('Error occurred:', error);
+                alert('An error occurred while sending the email: ' + error.text);
+            });
+        });
+    </script>
 </body>
 </html>
