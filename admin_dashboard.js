@@ -1,9 +1,5 @@
-// admin_dashboard.js
-import { db } from './firebase.js';
-import { collection, getDocs } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-firestore.js";
-
 async function fetchAppointments() {
-    const querySnapshot = await getDocs(collection(db, "appointments"));
+    const querySnapshot = await firebase.firestore().collection('appointments').get();
     const appointmentsBody = document.getElementById('appointmentsBody');
 
     querySnapshot.forEach((doc) => {
