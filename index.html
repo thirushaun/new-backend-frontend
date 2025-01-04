@@ -5,31 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Appointment Booking</title>
     <link rel="stylesheet" href="styles.css">
-
-    <!-- Include the Firebase SDK from CDN -->
-    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-firestore.js"></script>
-
-    <script type="text/javascript">
-        // Initialize Firebase with your configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyCfagQ1fcsslhZ33xm1QBqGOYO_JsqEkeg",
-            authDomain: "medivironap.firebaseapp.com",
-            projectId: "medivironap",
-            storageBucket: "medivironap.firebasestorage.app",
-            messagingSenderId: "440212618885",
-            appId: "1:440212618885:web:11e85acba754ea9fd273ec",
-            measurementId: "G-0ZTM2WNX7M"
-        };
-
-        // Initialize Firebase app
-        const app = firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore(app);
-    </script>
 </head>
 <body>
-
-    <!-- Appointment Booking Form -->
     <div class="container">
         <h1>Book Your Appointment</h1>
         <form id="appointmentForm">
@@ -56,105 +33,9 @@
             <input type="time" id="time" required>
 
             <button type="submit">Book Appointment</button>
-            <div id="statusMessage"></div>
         </form>
     </div>
 
-    <!-- Admin Login Section (hidden by default) -->
-    <div class="container" id="adminLoginSection" style="display:none;">
-        <label for="adminPasswordInput">Enter Admin Password</label>
-        <input type="password" id="adminPasswordInput" placeholder="Enter Admin Password" required>
-        <button id="adminLoginBtn">Login</button>
-    </div>
-
-    <!-- Admin Login Button -->
-    <button id="adminLogin" onclick="toggleAdminLogin()">Admin Login</button>
-
-    <!-- Include the script for your custom functionality -->
-    <script src="script.js"></script>
-
-    <script>
-        // Function to toggle the visibility of the admin login form
-        function toggleAdminLogin() {
-            var adminLoginSection = document.getElementById('adminLoginSection');
-            if (adminLoginSection.style.display === "none") {
-                adminLoginSection.style.display = "block"; // Show admin login section
-            } else {
-                adminLoginSection.style.display = "none"; // Hide admin login section
-            }
-        }
-
-        // Handle admin login button click
-        document.getElementById('adminLoginBtn').addEventListener('click', function () {
-            var password = document.getElementById('adminPasswordInput').value;
-
-            // Check if the password is correct
-            if (password === "20061968") {
-                alert("Login successful! Redirecting to the Admin Dashboard...");
-                window.location.href = "admin_dashboard.html"; // Redirect to the admin dashboard page
-            } else {
-                alert("Incorrect password, please try again.");
-            }
-        });
-
-        // Handle form submission for appointment booking
-        document.getElementById('appointmentForm').addEventListener('submit', function (event) {
-            event.preventDefault(); // Prevent default form submission
-
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
-            const service = document.getElementById('service').value;
-            const date = document.getElementById('date').value;
-            const time = document.getElementById('time').value;
-
-            // Validate input fields
-            if (!name || !email || !phone || !service || !date || !time) {
-                alert("Please fill out all the fields.");
-                return;
-            }
-
-            // Send email via EmailJS using the provided template
-            emailjs.send('service_mmd3jws', 'template_lraqztk', {
-                to_name: name,
-                to_email: email,
-                service: service,
-                date: date,
-                time: time
-            })
-            .then(response => {
-                console.log('Email sent successfully', response);
-                alert('Appointment booked and email sent successfully!');
-                // Save to Firestore
-                saveAppointmentToFirestore({
-                    name: name,
-                    email: email,
-                    phone: phone,
-                    service: service,
-                    date: date,
-                    time: time
-                });
-            })
-            .catch(error => {
-                console.error('Error occurred:', error);
-                alert('An error occurred while sending the email: ' + error.text);
-            });
-        });
-
-        // Save Appointment to Firestore
-        function saveAppointmentToFirestore(appointmentData) {
-            const db = firebase.firestore();
-            const docRef = db.collection('appointments').doc('AP'); // Use the correct document ID
-
-            docRef.set(appointmentData)
-                .then(() => {
-                    console.log('Document written with ID: AP');
-                })
-                .catch((error) => {
-                    console.error('Error adding document: ', error);
-                    alert('An error occurred while saving the appointment data.');
-                });
-        }
-    </script>
+    <script type="module" src="script.js"></script>
 </body>
 </html>
