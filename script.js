@@ -44,8 +44,8 @@ document.getElementById('appointmentForm').addEventListener('submit', async func
 // Function to save appointment data to Firestore
 async function saveAppointmentToFirestore(appointmentData) {
     try {
-        // Specify the document ID (AP)
-        const docRef = await firebase.firestore().collection("appointments").doc("AP").set(appointmentData);
+        const db = firebase.firestore();
+        const docRef = await db.collection("appointments").doc("AP").set(appointmentData);
         console.log("Appointment data added to Firestore:", docRef);
     } catch (error) {
         console.error("Error saving appointment to Firestore:", error);
