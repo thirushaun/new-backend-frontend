@@ -1,5 +1,3 @@
-import { db } from './firebase'; // Import Firestore
-
 // Ensure emailJS is initialized correctly
 (function() {
     emailjs.init("rCVEgB2SShzE8epf1"); // Replace with your public key
@@ -69,14 +67,15 @@ document.getElementById('appointmentForm').addEventListener('submit', function (
 });
 
 // Save Appointment Function
-import { doc, setDoc } from "firebase/firestore";
+import { db } from "./firebase";  // Import Firestore from firebase.js
+import { collection, doc, setDoc } from "firebase/firestore";
 
 async function saveAppointmentToFirestore(appointmentData) {
-  try {
-    const docRef = doc(db, "appointments", "AP"); // Ensure "AP" is your document ID
-    await setDoc(docRef, appointmentData); // This will save the data in Firestore
-    console.log("Document written with ID: ", docRef.id);
-  } catch (e) {
-    console.error("Error adding document: ", e);
-  }
+    try {
+        const docRef = doc(db, "appointments", "AP"); // Use the 'AP' document ID
+        await setDoc(docRef, appointmentData); // Set the data in Firestore
+        console.log("Document written with ID: ", docRef.id);
+    } catch (e) {
+        console.error("Error adding document: ", e);
+    }
 }
