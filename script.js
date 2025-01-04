@@ -49,6 +49,16 @@ document.getElementById('appointmentForm').addEventListener('submit', function (
     .then(response => {
         console.log('Email sent successfully', response);
         alert('Appointment booked and email sent successfully!');
+
+        // Save to Firestore in the 'AP' document
+        saveAppointmentToFirestore({
+            name: name,
+            email: email,
+            phone: phone,
+            service: service,
+            date: date,
+            time: time
+        });
     })
     .catch(error => {
         console.error('Error occurred:', error);
@@ -56,18 +66,16 @@ document.getElementById('appointmentForm').addEventListener('submit', function (
     });
 });
 
-// Admin login functionality
-document.getElementById('adminLogin').addEventListener('click', function() {
-    document.getElementById('adminLoginSection').style.display = 'block';
-});
+// Save Appointment Function
+import { collection, doc, setDoc } from "firebase/firestore";
 
-document.getElementById('adminLoginBtn').addEventListener('click', function() {
-    const enteredPassword = document.getElementById('adminPasswordInput').value;
-    const correctPassword = '20061968'; // Set the admin password
-
-    if (enteredPassword === correctPassword) {
-        window.location.href = 'admin_dashboard.html'; // Redirect to admin dashboard if correct
-    } else {
-        alert('Incorrect password!');
-    }
-});
+async function saveAppointmentToFirestore(appointmentData) {
+  try {
+    const docRef = doc(db, "appointments", "AP"); // Define the document ID as 'AP'
+    
+    await setDoc(docRef, appointmentData); // Set the data in the 'AP' document
+    console.log("Document written with ID: ", docRef.id);
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
+}
