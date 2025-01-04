@@ -27,13 +27,6 @@ document.getElementById('appointmentForm').addEventListener('submit', async (eve
         await emailjs.send('service_mmd3jws', 'template_lraqztk', emailParams);
         console.log('Email sent to patient successfully');
 
-        // Send email to doctor (use a different template if needed)
-        await emailjs.send('service_mmd3jws', 'template_lraqztk', {
-            ...emailParams,
-            to_email: "doctor@example.com" // Replace with the doctor's email
-        });
-        console.log('Email sent to doctor successfully');
-
         // Save appointment to Firestore
         const docRef = await firebase.firestore().collection('appointments').add({
             name,
