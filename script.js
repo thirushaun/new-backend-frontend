@@ -67,15 +67,15 @@ document.getElementById('appointmentForm').addEventListener('submit', function (
 });
 
 // Save Appointment Function
-import { db } from "./firebase";  // Import Firestore from firebase.js
-import { collection, doc, setDoc } from "firebase/firestore";
+function saveAppointmentToFirestore(appointmentData) {
+  const db = firebase.firestore(); // Ensure firebase is initialized
+  const docRef = db.collection("appointments").doc("AP");
 
-async function saveAppointmentToFirestore(appointmentData) {
-    try {
-        const docRef = doc(db, "appointments", "AP"); // Use the 'AP' document ID
-        await setDoc(docRef, appointmentData); // Set the data in Firestore
-        console.log("Document written with ID: ", docRef.id);
-    } catch (e) {
-        console.error("Error adding document: ", e);
-    }
+  docRef.set(appointmentData)
+    .then(() => {
+        console.log("Document written with ID: AP");
+    })
+    .catch((error) => {
+        console.error("Error adding document: ", error);
+    });
 }
