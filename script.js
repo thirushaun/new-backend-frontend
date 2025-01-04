@@ -1,13 +1,26 @@
-// Ensure emailJS is initialized correctly
+// Import necessary Firebase functions
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-app.js";
+import { getFirestore, setDoc, doc } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-firestore.js";
+
+// EmailJS initialization
 (function () {
     emailjs.init("rCVEgB2SShzE8epf1"); // Replace with your public key from EmailJS
 })();
 
-// Initialize Firebase Firestore
-import { getFirestore, collection, getDocs, setDoc, doc } from 'https://www.gstatic.com/firebasejs/9.1.3/firebase-firestore.js';
-import { firebaseApp } from './firebase.js';  // Import the initialized Firebase app
+// Firebase configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyCfagQ1fcsslhZ33xm1QBqGOYO_JsqEkeg",
+    authDomain: "medivironap.firebaseapp.com",
+    projectId: "medivironap",
+    storageBucket: "medivironap.firebasestorage.app",
+    messagingSenderId: "440212618885",
+    appId: "1:440212618885:web:11e85acba754ea9fd273ec",
+    measurementId: "G-0ZTM2WNX7M"
+};
 
-const db = getFirestore(firebaseApp); // Get Firestore instance
+// Initialize Firebase app
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app); // Get Firestore instance
 
 // Appointment form submission
 document.getElementById('appointmentForm').addEventListener('submit', function (event) {
