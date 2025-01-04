@@ -1,7 +1,3 @@
-// script.js
-import { db } from './firebase.js';
-import { collection, addDoc } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-firestore.js";
-
 document.getElementById('appointmentForm').addEventListener('submit', async (event) => {
     event.preventDefault();
 
@@ -18,7 +14,7 @@ document.getElementById('appointmentForm').addEventListener('submit', async (eve
     }
 
     try {
-        const docRef = await addDoc(collection(db, "appointments"), {
+        const docRef = await firebase.firestore().collection('appointments').add({
             name,
             email,
             phone,
