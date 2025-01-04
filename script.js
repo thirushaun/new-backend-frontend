@@ -68,7 +68,7 @@ document.getElementById('appointmentForm').addEventListener('submit', function (
 
 // Admin login functionality
 document.getElementById('adminLogin').addEventListener('click', function() {
-    document.getElementById('adminLoginSection').style.display = 'block';
+    document.getElementById('adminLoginSection').style.display = 'block'; // Make the login section visible
 });
 
 document.getElementById('adminLoginBtn').addEventListener('click', function() {
@@ -84,7 +84,7 @@ document.getElementById('adminLoginBtn').addEventListener('click', function() {
 
 // Save Appointment Function
 import { db } from './firebase'; // Ensure db is imported correctly
-import { collection, doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
 
 // Function to save appointment data to Firestore
 async function saveAppointmentToFirestore(appointmentData) {
