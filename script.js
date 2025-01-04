@@ -3,10 +3,6 @@
     emailjs.init("rCVEgB2SShzE8epf1"); // Replace with your public key
 })();
 
-// Import Firestore db
-import { db } from './firebase'; // Make sure db is exported from firebase.js
-import { doc, setDoc } from "firebase/firestore"; // Using setDoc to overwrite document with the AP ID
-
 // Appointment form submission
 document.getElementById('appointmentForm').addEventListener('submit', function (event) {
     event.preventDefault();
@@ -70,13 +66,15 @@ document.getElementById('appointmentForm').addEventListener('submit', function (
     });
 });
 
-// Save Appointment Function
+// Save Appointment Function to Firestore
 async function saveAppointmentToFirestore(appointmentData) {
   try {
-    const docRef = doc(db, "appointments", "AP"); // Use the document ID 'AP'
+    // Ensure that you're using the correct Firestore document ID ('AP')
+    const docRef = doc(db, "appointments", "AP");
     
-    await setDoc(docRef, appointmentData); // Set the data in the 'AP' document
-    console.log("Document written with ID: ", docRef.id); // Log the new document ID
+    // Use setDoc to set the data (overwriting if needed)
+    await setDoc(docRef, appointmentData);
+    console.log("Document written with ID: ", docRef.id); // Log the document ID
   } catch (e) {
     console.error("Error adding document: ", e);
   }
