@@ -1,4 +1,6 @@
-// firebase.js
+// Import necessary Firebase functions
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
 
 // Your Firebase configuration
 const firebaseConfig = {
@@ -11,15 +13,11 @@ const firebaseConfig = {
     measurementId: "G-0ZTM2WNX7M"
 };
 
-// Import the Firebase SDK
-import firebase from "firebase/app";
-import "firebase/firestore"; // This imports Firestore
+// Initialize Firebase App
+const app = initializeApp(firebaseConfig);
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+// Initialize Firestore
+const db = getFirestore(app);
 
-// Get a Firestore instance
-const db = firebase.firestore();
-
-// Export db instance for use elsewhere
+// Export Firestore db instance for use in other files
 export { db };
