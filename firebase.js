@@ -1,7 +1,8 @@
-// firebase.js
+// Import the necessary functions from Firebase SDK
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
+// Your Firebase configuration object
 const firebaseConfig = {
   apiKey: "AIzaSyCfagQ1fcsslhZ33xm1QBqGOYO_JsqEkeg",
   authDomain: "medivironap.firebaseapp.com",
@@ -15,7 +16,8 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Initialize Firestore database
+// Initialize Firestore
 const db = getFirestore(app);
 
-export { app, db }; // Export the app and db for use in other files
+// Export the db for use in other modules
+export { db };
