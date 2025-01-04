@@ -1,5 +1,5 @@
-document.getElementById('appointmentForm').addEventListener('submit', function (event) {
-    event.preventDefault(); // Prevent default form submission
+document.getElementById('appointmentForm').addEventListener('submit', async (event) => {
+    event.preventDefault();
 
     const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
@@ -8,50 +8,48 @@ document.getElementById('appointmentForm').addEventListener('submit', function (
     const date = document.getElementById('date').value;
     const time = document.getElementById('time').value;
 
-    // Validate input fields
     if (!name || !email || !phone || !service || !date || !time) {
-        alert("Please fill out all the fields.");
+        alert("Please fill out all fields.");
         return;
     }
 
-    // Send email via EmailJS using the provided template
-    emailjs.send('service_mmd3jws', 'template_lraqztk', {
+    // Send email to patient and doctor
+    const emailParams = {
         to_name: name,
         to_email: email,
         service: service,
         date: date,
         time: time
-    })
-    .then(response => {
-        console.log('Email sent successfully', response);
-        alert('Appointment booked and email sent successfully!');
-        // Save appointment to Firestore in the 'AP' document
-        saveAppointmentToFirestore({
-            name: name,
-            email: email,
-            phone: phone,
-            service: service,
-            date: date,
-            time: time
+    };
+
+    try {
+        // Send email to patient
+        await emailjs.send('service_mmd3jws', 'template_lraqztk', emailParams);
+        console.log('Email sent to patient successfully');
+
+        // Send email to doctor (use a different template if needed)
+        await emailjs.send('service_mmd3jws', 'template_lraqztk', {
+            ...emailParams,
+            to_email: "doctor@example.com" // Replace with the doctor's email
         });
-    })
-    .catch(error => {
-        console.error('Error occurred:', error);
-        alert('An error occurred while sending the email: ' + error.text);
-    });
+        console.log('Email sent to doctor successfully');
+
+        // Save appointment to Firestore
+        const docRef = await firebase.firestore().collection('appointments').add({
+            name,
+            email,
+            phone,
+            service,
+            date,
+            time,
+            status: "Pending" // Default status
+        });
+        console.log("Appointment booked with ID: ", docRef.id);
+
+        alert("Appointment booked successfully! Emails have been sent.");
+        document.getElementById('appointmentForm').reset(); // Clear the form
+    } catch (error) {
+        console.error("Error: ", error);
+        alert("An error occurred. Please try again.");
+    }
 });
-
-// Save Appointment Function
-function saveAppointmentToFirestore(appointmentData) {
-    const db = firebase.firestore();
-    const docRef = db.collection('appointments').doc('AP'); // Use the correct document ID
-
-    docRef.set(appointmentData)
-        .then(() => {
-            console.log('Document written with ID: AP');
-        })
-        .catch((error) => {
-            console.error('Error adding document: ', error);
-            alert('An error occurred while saving the appointment data.');
-        });
-}
