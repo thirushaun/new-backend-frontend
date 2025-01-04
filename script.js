@@ -83,8 +83,8 @@ document.getElementById('adminLoginBtn').addEventListener('click', function() {
 });
 
 // Save Appointment Function
-import { collection, doc, setDoc } from "firebase/firestore";
-import { db } from './firebase.js';
+import { db } from './firebase.js'; // Import the Firestore db
+import { collection, doc, setDoc } from "firebase/firestore"; // Firestore functions
 
 async function saveAppointmentToFirestore(appointmentData) {
   try {
