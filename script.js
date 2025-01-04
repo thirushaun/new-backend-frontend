@@ -1,10 +1,13 @@
-// Import Firestore from firebase.js
-import { db } from './firebase.js'; // Import the Firestore instance
-
 // Ensure emailJS is initialized correctly
-(function() {
+(function () {
     emailjs.init("rCVEgB2SShzE8epf1"); // Replace with your public key from EmailJS
 })();
+
+// Initialize Firebase Firestore
+import { getFirestore, collection, getDocs, setDoc, doc } from 'https://www.gstatic.com/firebasejs/9.1.3/firebase-firestore.js';
+import { firebaseApp } from './firebase.js';  // Import the initialized Firebase app
+
+const db = getFirestore(firebaseApp); // Get Firestore instance
 
 // Appointment form submission
 document.getElementById('appointmentForm').addEventListener('submit', function (event) {
@@ -31,37 +34,33 @@ document.getElementById('appointmentForm').addEventListener('submit', function (
         date: date,
         time: time
     })
-    .then(response => {
-        console.log('Email sent successfully', response);
-        alert('Appointment booked and email sent successfully!');
-
-        // Save to Firestore in the 'AP' document
-        saveAppointmentToFirestore({
-            name: name,
-            email: email,
-            phone: phone,
-            service: service,
-            date: date,
-            time: time
+        .then(response => {
+            console.log('Email sent successfully', response);
+            alert('Appointment booked and email sent successfully!');
+            // Save appointment to Firestore in the 'AP' document
+            saveAppointmentToFirestore({
+                name: name,
+                email: email,
+                phone: phone,
+                service: service,
+                date: date,
+                time: time
+            });
+        })
+        .catch(error => {
+            console.error('Error occurred:', error);
+            alert('An error occurred while sending the email: ' + error.text);
         });
-    })
-    .catch(error => {
-        console.error('Error occurred:', error);
-        alert('An error occurred while sending the email: ' + error.text);
-    });
 });
 
 // Save Appointment Function
 function saveAppointmentToFirestore(appointmentData) {
-    // Ensure firebase is initialized
-    const docRef = db.collection("appointments").doc("AP");
-
-    docRef.set(appointmentData)
-    .then(() => {
-        console.log("Document written with ID: AP");
-    })
-    .catch((error) => {
-        console.error("Error adding document: ", error);
-        alert("An error occurred while saving the appointment data: " + error.message);
-    });
+    const docRef = doc(db, "appointments", "AP");
+    setDoc(docRef, appointmentData)
+        .then(() => {
+            console.log("Document written with ID: AP");
+        })
+        .catch((error) => {
+            console.error("Error adding document: ", error);
+        });
 }
