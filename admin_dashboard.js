@@ -5,9 +5,9 @@ async function fetchAppointments() {
 
     querySnapshot.forEach((doc) => {
         const appointment = doc.data();
-        const tr = document.createElement('tr');
+        const row = document.createElement('tr');
 
-        tr.innerHTML = `
+        row.innerHTML = `
             <td>${appointment.name}</td>
             <td>${appointment.service}</td>
             <td>${appointment.date}</td>
@@ -19,7 +19,7 @@ async function fetchAppointments() {
             </td>
         `;
 
-        appointmentsBody.appendChild(tr);
+        appointmentsBody.appendChild(row);
     });
 }
 
