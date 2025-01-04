@@ -62,42 +62,7 @@
         </form>
     </div>
 
-    <!-- Admin Login Section (hidden by default) -->
-    <div class="container" id="adminLoginSection" style="display:none;">
-        <label for="adminPasswordInput">Enter Admin Password</label>
-        <input type="password" id="adminPasswordInput" placeholder="Enter Admin Password" required>
-        <button id="adminLoginBtn">Login</button>
-    </div>
-
-    <!-- Admin Login Button -->
-    <button id="adminLogin" onclick="toggleAdminLogin()">Admin Login</button>
-
     <!-- Load script.js -->
     <script src="script.js"></script>
-
-    <script>
-        // Function to toggle the visibility of the admin login form
-        function toggleAdminLogin() {
-            var adminLoginSection = document.getElementById('adminLoginSection');
-            if (adminLoginSection.style.display === "none") {
-                adminLoginSection.style.display = "block"; // Show admin login section
-            } else {
-                adminLoginSection.style.display = "none"; // Hide admin login section
-            }
-        }
-
-        // Handle admin login button click
-        document.getElementById('adminLoginBtn').addEventListener('click', function () {
-            var password = document.getElementById('adminPasswordInput').value;
-
-            // Check if the password is correct
-            if (password === "20061968") {
-                alert("Login successful! Redirecting to the Admin Dashboard...");
-                window.location.href = "admin_dashboard.html"; // Redirect to the admin dashboard page
-            } else {
-                alert("Incorrect password, please try again.");
-            }
-        });
-    </script>
 </body>
 </html>
