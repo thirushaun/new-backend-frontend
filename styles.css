@@ -1,11 +1,10 @@
-/* General Reset */
+/* styles.css */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Body Styling */
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f4f4f4;
@@ -21,27 +20,20 @@ body {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-h1, h3 {
-    color: #333;
+label {
+    display: block;
+    margin-top: 10px;
 }
 
-table {
+input, select, button {
     width: 100%;
-    margin-top: 20px;
-    border-collapse: collapse;
-}
-
-table, th, td {
-    border: 1px solid #ddd;
-}
-
-th, td {
     padding: 10px;
-    text-align: left;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
 }
 
 button {
-    padding: 5px 10px;
     background-color: #0072ff;
     color: #fff;
     border: none;
@@ -50,8 +42,4 @@ button {
 
 button:hover {
     background-color: #005bb5;
-}
-
-button:active {
-    transform: translateY(2px);
 }
