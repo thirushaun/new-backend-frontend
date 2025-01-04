@@ -1,8 +1,8 @@
 // Import necessary Firebase functions
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-app.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-firestore.js";
 
-// Your Firebase configuration
+// Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyCfagQ1fcsslhZ33xm1QBqGOYO_JsqEkeg",
     authDomain: "medivironap.firebaseapp.com",
@@ -13,11 +13,8 @@ const firebaseConfig = {
     measurementId: "G-0ZTM2WNX7M"
 };
 
-// Initialize Firebase App
-const app = initializeApp(firebaseConfig);
-
-// Initialize Firestore
-const db = getFirestore(app);
+// Initialize Firebase app
+const firebaseApp = initializeApp(firebaseConfig);
 
 // Export Firestore db instance for use in other files
-export { db };
+export { firebaseApp };
