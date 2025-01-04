@@ -1,12 +1,13 @@
 async function fetchAppointments() {
-    const querySnapshot = await firebase.firestore().collection('appointments').get();
+    const db = firebase.firestore();
+    const querySnapshot = await db.collection('appointments').get();
     const appointmentsBody = document.getElementById('appointmentsBody');
 
     querySnapshot.forEach((doc) => {
         const appointment = doc.data();
-        const row = document.createElement('tr');
+        const tr = document.createElement('tr');
 
-        row.innerHTML = `
+        tr.innerHTML = `
             <td>${appointment.name}</td>
             <td>${appointment.service}</td>
             <td>${appointment.date}</td>
@@ -18,7 +19,7 @@ async function fetchAppointments() {
             </td>
         `;
 
-        appointmentsBody.appendChild(row);
+        appointmentsBody.appendChild(tr);
     });
 }
 
