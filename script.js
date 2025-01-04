@@ -1,6 +1,6 @@
 // Ensure emailJS is initialized correctly
-(function() {
-    emailjs.init("rCVEgB2SShzE8epf1"); // Replace with your public key
+(function () {
+    emailjs.init("rCVEgB2SShzE8epf1"); // Replace with your public key (EmailJS public key)
 })();
 
 // Appointment form submission
@@ -68,14 +68,30 @@ document.getElementById('appointmentForm').addEventListener('submit', function (
 
 // Save Appointment Function
 function saveAppointmentToFirestore(appointmentData) {
-  const db = firebase.firestore(); // Ensure firebase is initialized
-  const docRef = db.collection("appointments").doc("AP");
+    const db = firebase.firestore(); // Ensure Firestore is initialized correctly
+    const docRef = db.collection("appointments").doc("AP"); // Writing to AP document
 
-  docRef.set(appointmentData)
-    .then(() => {
-        console.log("Document written with ID: AP");
-    })
-    .catch((error) => {
-        console.error("Error adding document: ", error);
-    });
+    docRef.set(appointmentData)
+        .then(() => {
+            console.log("Document written with ID: AP");
+        })
+        .catch((error) => {
+            console.error("Error adding document: ", error);
+        });
 }
+
+// Admin login functionality
+document.getElementById('adminLogin').addEventListener('click', function () {
+    document.getElementById('adminLoginSection').style.display = 'block';
+});
+
+document.getElementById('adminLoginBtn').addEventListener('click', function () {
+    const enteredPassword = document.getElementById('adminPasswordInput').value;
+    const correctPassword = '20061968'; // Set your admin password here
+
+    if (enteredPassword === correctPassword) {
+        window.location.href = 'admin_dashboard.html'; // Redirect to the admin dashboard
+    } else {
+        alert('Incorrect password!');
+    }
+});
