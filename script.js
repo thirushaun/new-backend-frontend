@@ -1,10 +1,30 @@
+// Import the Firebase SDK (ensure this is in your script.js file)
+import { initializeApp } from "firebase/app";
+import { getFirestore, collection, addDoc } from "firebase/firestore";
+
+// Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyCfagQ1fcsslhZ33xm1QBqGOYO_JsqEkeg",
+  authDomain: "medivironap.firebaseapp.com",
+  projectId: "medivironap",
+  storageBucket: "medivironap.firebasestorage.app",
+  messagingSenderId: "440212618885",
+  appId: "1:440212618885:web:11e85acba754ea9fd273ec",
+  measurementId: "G-0ZTM2WNX7M"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
 // Ensure emailJS is initialized correctly
 (function() {
-    emailjs.init("rCVEgB2SShzE8epf1"); // Your public key from EmailJS
+    emailjs.init("rCVEgB2SShzE8epf1"); // Replace with your public key
 })();
 
-document.getElementById('appointmentForm').addEventListener('submit', async function (event) {
-    event.preventDefault();
+// Appointment form submission
+document.getElementById('appointmentForm').addEventListener('submit', function (event) {
+    event.preventDefault(); // Prevent the form from submitting the default way
 
     const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
@@ -27,28 +47,49 @@ document.getElementById('appointmentForm').addEventListener('submit', async func
         date: date,
         time: time
     })
-    .then(async (response) => {
+    .then(response => {
         console.log('Email sent successfully', response);
         alert('Appointment booked and email sent successfully!');
 
-        // Save appointment data to Firebase Firestore
-        const appointmentData = { name, email, phone, service, date, time };
-        await saveAppointmentToFirestore(appointmentData); // Call the function to save data
+        // Save to Firestore in the 'AP' document
+        saveAppointmentToFirestore({
+            name: name,
+            email: email,
+            phone: phone,
+            service: service,
+            date: date,
+            time: time
+        });
     })
-    .catch((error) => {
-        console.error('Error occurred:', error);
+    .catch(error => {
+        console.error('Error occurred while sending email:', error);
         alert('An error occurred while sending the email: ' + error.text);
     });
 });
 
-// Function to save appointment data to Firestore
+// Save Appointment Function to Firestore
 async function saveAppointmentToFirestore(appointmentData) {
-    try {
-        const db = firebase.firestore();
-        const docRef = await db.collection("appointments").doc("AP").set(appointmentData);
-        console.log("Appointment data added to Firestore:", docRef);
-    } catch (error) {
-        console.error("Error saving appointment to Firestore:", error);
-        alert("An error occurred while saving the appointment data.");
-    }
+  try {
+    const docRef = await addDoc(collection(db, "appointments"), appointmentData);
+    console.log("Document written with ID: ", docRef.id);
+  } catch (e) {
+    console.error("Error saving appointment to Firestore: ", e);
+    alert('An error occurred while saving the appointment data: ' + e);
+  }
 }
+
+// Admin login functionality
+document.getElementById('adminLogin').addEventListener('click', function() {
+    document.getElementById('adminLoginSection').style.display = 'block';
+});
+
+document.getElementById('adminLoginBtn').addEventListener('click', function() {
+    const enteredPassword = document.getElementById('adminPasswordInput').value;
+    const correctPassword = '20061968'; // Set the admin password
+
+    if (enteredPassword === correctPassword) {
+        window.location.href = 'admin_dashboard.html'; // Redirect to admin dashboard if correct
+    } else {
+        alert('Incorrect password!');
+    }
+});
