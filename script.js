@@ -1,3 +1,5 @@
+import { db } from './firebase'; // Import Firestore
+
 // Ensure emailJS is initialized correctly
 (function() {
     emailjs.init("rCVEgB2SShzE8epf1"); // Replace with your public key
@@ -49,7 +51,7 @@ document.getElementById('appointmentForm').addEventListener('submit', function (
     .then(response => {
         console.log('Email sent successfully', response);
         alert('Appointment booked and email sent successfully!');
-        
+
         // Save to Firestore in the 'AP' document
         saveAppointmentToFirestore({
             name: name,
@@ -66,34 +68,14 @@ document.getElementById('appointmentForm').addEventListener('submit', function (
     });
 });
 
-// Admin login functionality
-document.getElementById('adminLogin').addEventListener('click', function() {
-    document.getElementById('adminLoginSection').style.display = 'block';
-});
-
-document.getElementById('adminLoginBtn').addEventListener('click', function() {
-    const enteredPassword = document.getElementById('adminPasswordInput').value;
-    const correctPassword = '20061968'; // Set the admin password
-
-    if (enteredPassword === correctPassword) {
-        window.location.href = 'admin_dashboard.html'; // Redirect to admin dashboard if correct
-    } else {
-        alert('Incorrect password!');
-    }
-});
-
 // Save Appointment Function
-import { db } from './firebase.js'; // Import the Firestore db
-import { collection, doc, setDoc } from "firebase/firestore"; // Firestore functions
+import { doc, setDoc } from "firebase/firestore";
 
 async function saveAppointmentToFirestore(appointmentData) {
   try {
-    // Ensure you're using the correct Firestore document ID ('AP')
-    const docRef = doc(db, "appointments", "AP"); // Define the document ID as 'AP'
-
-    // Use setDoc to set the data (overwriting if needed)
-    await setDoc(docRef, appointmentData);
-    console.log("Document written with ID: ", docRef.id); // Log the document ID
+    const docRef = doc(db, "appointments", "AP"); // Ensure "AP" is your document ID
+    await setDoc(docRef, appointmentData); // This will save the data in Firestore
+    console.log("Document written with ID: ", docRef.id);
   } catch (e) {
     console.error("Error adding document: ", e);
   }
